@@ -1,0 +1,35 @@
+{
+	"info": {
+		"_postman_id": "bbeac214-b05e-4a26-859a-5675133347b3",
+		"name": "shopping-cart",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50506481",
+		"_collection_link": "https://nsyapsteam-3a5f5fe3-8553534.postman.co/workspace/nsyapsteam's-Workspace~12c4c817-b4a9-452b-8744-9a5fd43be6c9/collection/50506481-bbeac214-b05e-4a26-859a-5675133347b3?action=share&source=collection_link&creator=50506481"
+	},
+	"item": [
+		{
+			"name": "APIorders",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"items\":[\r\n    {\r\n        \"id\":4,\r\n        \"name\":\"Monitor\",\r\n        \"price\":650,\r\n        \"quantity\":1\r\n    }\r\n]\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

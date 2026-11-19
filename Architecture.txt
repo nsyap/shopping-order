@@ -1,0 +1,109 @@
+Architecture
+=============
+ALL - AngularJS + Apache Camel + SpringBoot
+
+ 
+FE:
+-------
+angularjs-shopping-cart
+- HTML
+- CSS
+- AngularJS
+- Product listing and shopping cart
+
+
+Shopping Cart Application 
+
+- Product listing
+- Add items to cart
+- Calculate total price
+- Manage shopping cart
+
+IDE: Visual Studio v1.144.1
+============================
+ > Extensions: Live Server 5.7.10
+ 
+Live Server localhost URL:
+http://127.0.0.1:5500/index.html
+
+
+Concept	             |  Purpose
+----------------------------------------------------------
+ng-app	             |  Initialize AngularJS application
+ng-controller	     |  Define controller
+ng-model	         |  Two-way data binding
+ng-repeat	         |  Loop through records
+ng-click	         |  Handle button clicks
+$scope	             |  Share data between controller and view
+$http	             |  Call REST APIs
+$routeProvider	     |  Handle page navigation
+Factory / Service	 |  Reusable business logic
+Dependency Injection |	Inject services into components
+
+
+>>> File: index.html
+<body ng-controller="ShoppingController">
+
+>>> File: app.js
+app.controller('ShoppingController', function($scope, $http) {
+
+*** $http	- Sends HTTP requests to Java Spring Boot
+
+    // Checkout
+    $scope.checkout = function () {
+
+        alert(
+            'Order Total: RM ' +
+            $scope.getTotalPrice().toFixed(2)
+        );
+
+        var orderData = {
+            items: $scope.cart,
+            total: $scope.total
+        };
+
+        $http.post(API_URL, orderData, {
+          responseType: "text",
+          transformResponse: function (data) {
+          return data;
+          }
+        })
+        .then(function (response) {
+
+            alert(response.data);
+           //example: 
+           // Order processed successfully: 
+           // {"items":[{"id":4,"name":"Monitor","price":650,"quantity":1}]}
+        })
+        .catch(function (error) {
+
+            console.error(error);
+
+            alert("Unable to submit order.");
+        });
+    };
+
+});
+
+------------------------------------------------------------------
+
+
+BE:
+-------
+- Java 17
+- Spring Boot 4.1.2
+- Apache Camel 4.18.0
+- Maven 3.9.14
+
+
+>>> File: OrderRoute
+
+@Override
+public void configure() {
+
+    from("direct:order")
+        .log("Received shopping order: ${body}")
+        .setBody(simple("Order processed successfully: ${body}"));
+
+  }quantity": 2
+}
