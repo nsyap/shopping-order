@@ -119,6 +119,43 @@ CREATE TABLE image_file (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+In PostgreSQL, BYTEA is a data type used to store binary data, such as:
+- Images (JPG, PNG, GIF)
+- PDF documents
+- Word documents
+- Excel files
+- Other binary files
+
+PostgreSQL BYTEA supports up to approximately 1 GB per field 
+(the practical maximum is slightly lower due to PostgreSQL's field-size limits).
+
+These are practical guidelines, not PostgreSQL restrictions:
+-------------------------------------------------------
+Image size	 |   Recommendation
+-------------------------------------------------------
+Below 1 MB   |	 Excellent
+1–5 MB	     |	 Good
+5–10 MB      |	 Generally fine
+10–50 MB	 |	 Consider performance
+Above 50 MB	 |	 Consider external file storage
+-------------------------------------------------------
+
+
+BYTEA vs Large Objects (BLOB) vs Physical files
+--------------------------------------------------------------------------------------------------------------------------
+Comparison             |  	BYTEA             |		Large Objects (LO)             |		Physical file
+--------------------------------------------------------------------------------------------------------------------------
+Storage	               |   Inside database    | Inside database, referenced by OID |		Server folder
+Maximum size           |   ~1 GB per field    |	      Up to 4 TB	               |	Depends on disk
+Database backup        |  	Included          |		  Included                     |		Separate backup
+CRUD	               |  	Easy              |		More complicated               |		Easy
+Database performance   |Can increase DB size  |	Suitable for large binary data	   |	Less database overhead
+Transaction support	   |	Yes	              |	         Yes                       |		Not inherently
+File management        | Database handles it  |	    Database handles it	           |	Application handles it
+Deployment	           |	Simple	          |    	More complicated               | Requires folder/storage management
+--------------------------------------------------------------------------------------------------------------------------
+
+
 Important version note: 
 use Camel 4.18.x, not 4.19 or later, because Camel 4.19 moved to Spring Boot 4 and no longer supports Spring Boot 3. 
 Camel 4.18.5 supports Java 17 and is the latest 4.18 LTS release listed by Apache Camel
