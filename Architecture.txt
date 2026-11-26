@@ -107,3 +107,32 @@ public void configure() {
 
   }quantity": 2
 }
+
+
+---------------- CRUD Image ----------------
+
+CREATE TABLE image_file (
+    id BIGSERIAL PRIMARY KEY,
+    file_name VARCHAR(255) NOT NULL,
+    content_type VARCHAR(100) NOT NULL,
+    image_data BYTEA NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+Important version note: 
+use Camel 4.18.x, not 4.19 or later, because Camel 4.19 moved to Spring Boot 4 and no longer supports Spring Boot 3. 
+Camel 4.18.5 supports Java 17 and is the latest 4.18 LTS release listed by Apache Camel
+
+How Camel works here:
+- direct:image-create receives image information from the controller.
+- sql: executes the SQL statement.
+- :#fileName reads the fileName value from the message body's Map.
+- :#imageData reads the image's byte[].
+- dataSource=#dataSource uses Spring Boot's configured PostgreSQL DataSource.
+
+RUN:
+
+Started create-image (direct://image-create)
+Started get-image (direct://image-get)
+Started update-image (direct://image-update)
+Started delete-image (direct://image-delete)
